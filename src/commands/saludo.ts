@@ -6,7 +6,7 @@ export const saludo: Command = {
   data: new SlashCommandBuilder()
     .setName("hola")
     .setDescription("Te responde como estas??"),
-  run: async (interaction: CommandInteraction) => {
+  async run(interaction: CommandInteraction) {
     await interaction.reply("Como estas??");
   },
 };

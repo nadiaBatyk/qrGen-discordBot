@@ -1,30 +1,19 @@
-import {
-  BaseInteraction,
-  Client,
-  Collection,
-  Events,
-  GatewayIntentBits,
-  Interaction,
-} from "discord.js";
-import token from "./config.json";
-import fs from "fs";
-import path from "path";
+import { Client, Events, GatewayIntentBits, Interaction } from "discord.js";
 import { CommandList } from "./commands/_CommandList";
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+import { onReady } from "./events/onReady";
 
-/* client.once(Events.ClientReady, (c) => {
-	console.log(`Listo, loggueado como ${c.user.tag}`);
-});
-client.login(token.token); */
-client.commands = new Collection();
-
-
-client.on(Events.InteractionCreate, async (interaction: Interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  for(const Command of CommandList){
-    if(interaction.commandName === Command.data.name){
-      await Command.run(interaction)
-      break;
+import { token } from "./config.json";
+(async () => {
+  const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+  client.once(Events.ClientReady, async () => await onReady(client));
+  client.on(Events.InteractionCreate, async (interaction: Interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+    for (const Command of CommandList) {
+      if (interaction.commandName === Command.data.name) {
+        await Command.run(interaction);
+        break;
+      }
     }
-  }
-});
+  });
+  await client.login(token);
+})();
