@@ -1,4 +1,4 @@
 import { Command } from "../interfaces/Command";
-import { saludo } from "./saludo";
+import { qrCode } from "./qrCode";
 
-export const CommandList: Command[] = [saludo];
+export const CommandList: Command[] = [qrCode];
